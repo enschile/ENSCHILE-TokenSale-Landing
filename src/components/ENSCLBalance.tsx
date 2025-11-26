@@ -44,14 +44,14 @@ export function ENSCLBalance() {
   };
 
   const handleAddToMetaMask = async () => {
-    if (!window.ethereum) {
+    if (typeof window === 'undefined' || !window.ethereum) {
       alert(t('home.ensclBalance.metaMaskNotFound'));
       return;
     }
 
     setIsAdding(true);
     try {
-      await window.ethereum.request({
+      const wasAdded = await window.ethereum.request({
         method: 'wallet_watchAsset',
         params: {
           type: 'ERC20',
@@ -62,9 +62,16 @@ export function ENSCLBalance() {
           },
         },
       });
-    } catch (error) {
+
+      if (wasAdded) {
+        console.log('Token added to MetaMask successfully');
+      }
+    } catch (error: any) {
       console.error('Error adding token to MetaMask:', error);
-      alert(t('home.ensclBalance.addError'));
+      // Solo mostrar alerta si el usuario no canceló la acción
+      if (error?.code !== 4001) {
+        alert(t('home.ensclBalance.addError'));
+      }
     } finally {
       setIsAdding(false);
     }
@@ -92,7 +99,7 @@ export function ENSCLBalance() {
           </div>
           <Button
             onClick={handleAddToMetaMask}
-            disabled={!isConnected || isAdding}
+            disabled={isAdding || typeof window === 'undefined' || !window.ethereum}
             variant="outline"
             size="sm"
             className="border-cyan-500/30 bg-white/5 hover:bg-white/10 hover:border-cyan-500/50 text-cyan-300 hover:text-cyan-200 flex-shrink-0"

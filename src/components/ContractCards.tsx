@@ -51,7 +51,7 @@ export const ContractCards = () => {
   ];
 
   return (
-    <div className="w-full max-w-6xl mx-auto mb-12">
+    <div className="w-full mb-12">
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {cards.map((card) => {
           const IconComponent = card.icon;

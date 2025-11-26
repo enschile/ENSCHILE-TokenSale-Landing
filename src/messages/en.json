@@ -294,7 +294,7 @@
       "description": "Standard ERC20 token with advanced extensions. Includes support for ERC1363 (transfer and call), ERC20Burnable, ERC20Permit and ERC20Votes. Total supply: 10,000,000 tokens."
     },
     "tokensale": {
-      "title": "ENSCHILE Token Sale Contract",
+      "title": "Token Sale Contract",
       "description": "ENSCHILE token sale contract with ReentrancyGuard protection and Ownable control. Fixed price: 0.1 USDT per token. Maximum limit per user: 50,000 tokens."
     },
     "github": {

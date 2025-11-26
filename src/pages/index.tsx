@@ -197,7 +197,7 @@ const Home: NextPage = () => {
         </div>
 
         <div className="px-4 w-full relative z-10" style={{ marginTop: `${marginTop}px` }}>
-          <div className="flex flex-col lg:flex-row gap-6 items-start mx-auto">
+          <div className="flex flex-col lg:flex-row gap-6 items-start">
             {/* Columna izquierda: Stats Cards */}
             <div className="w-full lg:w-2/5 flex flex-col gap-6">
               {/* Tarjeta de Balance ENSCL */}
@@ -393,7 +393,7 @@ const Home: NextPage = () => {
           <ContractCards />
 
           {/* Sección FAQ */}
-          <div className="mb-8 w-full max-w-6xl mx-auto">
+          <div className="mb-8 w-full">
             <FAQSection />
           </div>
         </div>
