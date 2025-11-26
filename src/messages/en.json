@@ -1,0 +1,337 @@
+{
+  "common": {
+    "connectWallet": "Connect Wallet",
+    "language": "Language",
+    "mintLive": "Mint Live",
+    "mintClosed": "Mint Closed",
+    "english": "English",
+    "spanish": "Español",
+    "usdt": "USDT",
+    "logoAlt": "Enschile Logo",
+    "verified": "Verified",
+    "languageNames": {
+      "english": "English",
+      "spanish": "Español"
+    },
+    "socialNetworks": {
+      "twitter": "Twitter",
+      "github": "GitHub",
+      "instagram": "Instagram",
+      "telegram": "Telegram"
+    }
+  },
+  "home": {
+    "title": "ENSCHILE Token Sale",
+    "metaDescription": "ENSCHILE Token Sale Landing Page",
+    "tokenPrice": {
+      "title": "Token Price",
+      "description": "Current ENSCL token price",
+      "equivalence": "1 ENSCL = {{price}} USDT"
+    },
+    "saleProgress": {
+      "title": "Sale Progress",
+      "description": "Tokens sold vs available",
+      "sold": "Sold",
+      "remaining": "remaining",
+      "ofTotal": "of total"
+    },
+    "quantitySelector": {
+      "title": "Quantity Selector",
+      "description": "Slide to select",
+      "tokenAmount": "Token Amount",
+      "unitPrice": "Unit price",
+      "estimatedTotal": "Estimated total",
+      "confirmPurchase": "Confirm Purchase",
+      "approveUSDT": "Approve USDT",
+      "approving": "Approving...",
+      "purchasing": "Purchasing...",
+      "processing": "Processing...",
+      "purchaseSuccess": "Purchase successful!",
+      "connectWallet": "Connect your wallet to continue",
+      "insufficientBalance": "Insufficient USDT balance",
+      "readyToPurchase": "Ready to purchase",
+      "quickSelection": "Quick selection"
+    },
+    "ensclBalance": {
+      "title": "ENSCL Balance",
+      "description": "Your ENSCL tokens",
+      "balance": "Balance",
+      "addToMetaMask": "MetaMask",
+      "adding": "Adding...",
+      "metaMaskNotFound": "MetaMask not found. Please install MetaMask to continue.",
+      "addError": "Error adding token to MetaMask"
+    },
+    "purchaseSuccess": {
+      "title": "Purchase Successful!",
+      "congratulations": "Congratulations! Your purchase has been completed successfully.",
+      "summary": "Purchase Summary",
+      "tokensPurchased": "Tokens purchased",
+      "totalCost": "Total cost",
+      "transactionHash": "Transaction hash",
+      "viewOnEtherscan": "View on Etherscan",
+      "addToMetaMask": "Add ENSCL to MetaMask",
+      "close": "Close",
+      "adding": "Adding...",
+      "etherscanUnavailable": "Etherscan not available for this network"
+    }
+  },
+  "demo": {
+    "title": "Demo - Token Purchase Cards",
+    "metaDescription": "Demo page with 10 different token purchase card designs",
+    "heading": "Token Purchase Card Designs",
+    "subheading": "10 creative and professional designs for token purchase and exchange",
+    "cards": {
+      "minimalist": {
+        "title": "Minimalist Purchase",
+        "description": "Clean and simple design",
+        "amount": "Amount",
+        "price": "Price",
+        "total": "Total",
+        "buyNow": "Buy Now"
+      },
+      "quantitySelector": {
+        "title": "Quantity Selector",
+        "description": "Slide to select",
+        "tokenAmount": "Token Amount",
+        "unitPrice": "Unit price",
+        "estimatedTotal": "Estimated total",
+        "confirmPurchase": "Confirm Purchase"
+      },
+      "exchange": {
+        "title": "Exchange",
+        "description": "Buy or sell tokens",
+        "buy": "Buy",
+        "sell": "Sell",
+        "buyAmount": "Amount to buy",
+        "sellAmount": "Amount to sell",
+        "currentPrice": "Current price",
+        "buyTokens": "Buy Tokens",
+        "sellTokens": "Sell Tokens"
+      },
+      "tokenSale": {
+        "title": "ENSCHILE Token Sale",
+        "description": "Sale progress",
+        "active": "Active",
+        "sold": "Sold",
+        "completed": "completed",
+        "available": "available",
+        "price": "Price",
+        "raised": "Raised",
+        "participateNow": "Participate Now"
+      },
+      "quickSwap": {
+        "title": "Quick Swap",
+        "description": "Quick exchange",
+        "from": "From",
+        "to": "To",
+        "swap": "Swap"
+      },
+      "detailed": {
+        "title": "Detailed Purchase",
+        "description": "Basic information and details",
+        "amount": "Amount",
+        "total": "Total",
+        "unitPrice": "Unit price",
+        "estimatedTime": "Estimated time",
+        "networkFee": "Network fee",
+        "willReceive": "You will receive approximately",
+        "continue": "Continue"
+      },
+      "quickPurchase": {
+        "title": "Quick Purchase",
+        "description": "Select a predefined amount",
+        "orCustom": "Or enter custom amount",
+        "usdEquivalent": "USD equivalent"
+      },
+      "premium": {
+        "title": "Enschile Token",
+        "symbol": "ENS",
+        "premium": "Premium",
+        "price": "Price",
+        "marketCap": "Market Cap",
+        "buyAmount": "Amount to buy",
+        "total": "Total",
+        "connectAndBuy": "Connect and Buy"
+      },
+      "priceAnalysis": {
+        "title": "Price Analysis",
+        "description": "Price comparison",
+        "currentPrice": "Current price",
+        "price24h": "Price 24h ago",
+        "previous": "Previous",
+        "change24h": "24h change",
+        "volume24h": "24h volume",
+        "liquidity": "Liquidity",
+        "high": "High",
+        "viewFullChart": "View Full Chart"
+      },
+      "special": {
+        "title": "Special Purchase",
+        "description": "Unique design with special effects",
+        "auto": "Auto",
+        "amount": "Amount",
+        "price": "Price",
+        "bonus": "Bonus",
+        "autoModeActive": "Auto mode activated",
+        "totalWithBonus": "Total with bonus",
+        "specialPurchase": "Special Purchase"
+      }
+    }
+  },
+  "stats": {
+    "title": "ENSCHILE Token Sale Statistics",
+    "metaDescription": "Statistics and metrics of ENSCL token sale",
+    "heading": "ENSCHILE Token Sale Statistics",
+    "subheading": "Real-time metrics of ENSCL token sale",
+    "totalTokensAvailable": "Total Tokens Available",
+    "saleStatus": {
+      "title": "Sale Status",
+      "active": "Active",
+      "completed": "Completed"
+    },
+    "saleProgress": {
+      "title": "Sale Progress",
+      "description": "Tokens sold vs available",
+      "sold": "Sold",
+      "remaining": "remaining",
+      "ofTotal": "of total"
+    },
+    "totalRaised": {
+      "title": "Total Raised",
+      "sinceYesterday": "since yesterday"
+    },
+    "tokenPrice": {
+      "title": "Token Price",
+      "equivalence": "1 ENSCL = {{price}} USDT",
+      "totalSaleValue": "Total sale value"
+    },
+    "participants": {
+      "title": "Participants",
+      "activeBuyers": "Active buyers",
+      "averagePerBuyer": "Average per buyer"
+    },
+    "tokensSold": {
+      "title": "Tokens Sold",
+      "of": "of",
+      "progress": "Progress"
+    },
+    "tokensRemaining": {
+      "title": "Tokens Remaining",
+      "description": "Available for purchase",
+      "estimatedValue": "Estimated value:",
+      "availablePercentage": "Available percentage:"
+    },
+    "distribution": {
+      "title": "Distribution",
+      "sold": "Sold",
+      "available": "Available"
+    },
+    "timeRemaining": {
+      "title": "Time Remaining",
+      "urgent": "Urgent",
+      "daysUntilClose": "Days until close",
+      "averageDailyPace": "Average daily pace"
+    },
+    "additionalMetrics": {
+      "title": "Additional Metrics",
+      "subtitle": "Detailed performance analysis",
+      "totalSaleValue": "Total Sale Value",
+      "description": "Target capitalization",
+      "goal": "Goal",
+      "tokensToSell": "Tokens to Sell",
+      "descriptionAvailable": "ENSCL available",
+      "salePace": "Sale Pace",
+      "descriptionDaily": "Daily average",
+      "increasing": "Increasing"
+    }
+  },
+  "faq": {
+    "title": "FAQ",
+    "heading": "Frequently Asked Questions",
+    "description": "Find answers to the most common questions about our token",
+    "questions": [
+      {
+        "question": "How many tokens can I buy?",
+        "answer": "You can purchase the amount you consider appropriate within the range enabled in the presale, always subject to current stock availability."
+      },
+      {
+        "question": "What payment methods are available?",
+        "answer": "Payments are made exclusively onchain on the Ethereum network. You can use MetaMask or Rabby to complete your purchase with USDT. We do not accept payments with traditional currencies or other payment processors."
+      },
+      {
+        "question": "When will I receive my tokens?",
+        "answer": "Great news! Tokens are automatically released at the time of purchase through the smart contract interaction. You don't need to wait days or manual processes: once you confirm the transaction in your wallet, ENSCL tokens will arrive instantly to your address. It's that simple and transparent thanks to blockchain technology."
+      },
+      {
+        "question": "Where will I receive my tokens?",
+        "answer": "Tokens will be automatically received in the wallet you have connected on the landing page at the time of purchase. Make sure you have the correct wallet connected before confirming your transaction."
+      },
+      {
+        "question": "How can I exchange my tokens after purchasing them?",
+        "answer": "Once the presale is finished, you will be able to exchange your ENSCL tokens directly on Uniswap v4. To ensure there is always liquidity available for operations, we will allocate 1% of all funds raised during the presale to create and maintain liquidity pools on this platform. This will allow you to buy and sell your tokens easily and safely when needed."
+      },
+      {
+        "question": "What backs the value of EnsChile?",
+        "answer": "EnsChile is backed by a diversified portfolio of more than 500 ENS domains on Ethereum. Of this collection, approximately 300 are prepunks with numbers below 3000, representing high-value digital assets within the ENS ecosystem. This solid base of domains provides a tangible and valuable foundation for the project."
+      },
+      {
+        "question": "How are ENS domains kept active in the long term?",
+        "answer": "ENS domains have a limited validity period and require periodic renewal to remain active. To ensure that our domain collection remains protected and operational, we dedicate 1% of all presale revenue to an automatic renewal fund. This mechanism ensures that domains nearing expiration are automatically renewed, thus protecting the value and integrity of the assets backing the project."
+      },
+      {
+        "question": "How do I participate in the profits generated by the domains?",
+        "answer": "All profits generated from the sale or rental of ENS domains will be distributed among ENSCL token holders automatically. A smart contract will calculate and distribute your corresponding share based on the number of tokens you have in your wallet. The more tokens you own, the greater your participation in the profits. This process is completely transparent and works without intermediaries, ensuring that each person receives their fair share proportionally and in a decentralized manner."
+      },
+      {
+        "question": "Can I participate in project decisions?",
+        "answer": "Yes, absolutely. ENSCL tokens grant you the right to be part of a decentralized autonomous organization that will be managed through Tally. Through smart contracts, you will be able to vote and propose actions related to a portion of EnSchile's assets. Each decision is executed directly on the blockchain, which means your voice counts and winning proposals are automatically implemented without the need for intermediaries. Additionally, as an active member of the organization, you will receive a share of the benefits generated by operations performed with those assets."
+      }
+    ]
+  },
+  "contracts": {
+    "enscl": {
+      "title": "ENSCL Token Contract",
+      "description": "Standard ERC20 token with advanced extensions. Includes support for ERC1363 (transfer and call), ERC20Burnable, ERC20Permit and ERC20Votes. Total supply: 10,000,000 tokens."
+    },
+    "tokensale": {
+      "title": "ENSCHILE Token Sale Contract",
+      "description": "ENSCHILE token sale contract with ReentrancyGuard protection and Ownable control. Fixed price: 0.1 USDT per token. Maximum limit per user: 50,000 tokens."
+    },
+    "github": {
+      "title": "Open Source",
+      "description": "Smart contracts and landing code are available on GitHub for code audit and DYOR (Do Your Own Research). Total transparency for the community."
+    },
+    "viewOnEtherscan": "View on Etherscan",
+    "viewOnGitHub": "View on GitHub"
+  },
+  "errors": {
+    "contractAddressesNotConfigured": "Contract addresses not configured",
+    "tokenPriceUnavailable": "Token price is not available or invalid. Please try again later.",
+    "cannotCalculateTotalCost": "Could not calculate total cost. Please verify that the token price is valid.",
+    "approveUSDTError": "Error approving USDT",
+    "tokenAmountMustBeGreaterThanZero": "Token amount must be greater than 0",
+    "onlyXTokensAvailable": "Only {{count}} tokens available",
+    "insufficientUSDTBalance": "Insufficient USDT balance",
+    "approvalRequiredFirst": "USDT approval required first",
+    "purchaseTokensError": "Error purchasing tokens",
+    "priceError": "Error",
+    "calculatedCostIsZero": "Calculated cost is zero. Please verify that the token price is configured correctly in the contract.",
+    "calculatedCostIsZeroAlt": "Calculated cost is zero. The token price may not be configured correctly in the contract.",
+    "transactionReverted": "Transaction was reverted by the contract.",
+    "transactionRevertedWithReason": "Transaction reverted: {{reason}}",
+    "insufficientBalanceForTransaction": "Insufficient balance to complete the transaction.",
+    "transactionCancelledByUser": "Transaction cancelled by user.",
+    "approvalCancelledByUser": "Approval cancelled by user."
+  },
+  "logoSection": {
+    "efp": "EFP",
+    "ens": "ENS",
+    "ethereum": "Ethereum",
+    "ethid": "ETH ID",
+    "ethidentitykit": "ETH Identity Kit",
+    "grails": "Grails",
+    "signWithEthereum": "Sign with Ethereum",
+    "siwe": "SIWE",
+    "tally": "Tally"
+  }
+}

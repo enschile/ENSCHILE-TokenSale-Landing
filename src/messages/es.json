@@ -1,0 +1,337 @@
+{
+  "common": {
+    "connectWallet": "Conectar Billetera",
+    "language": "Idioma",
+    "mintLive": "Mint Activo",
+    "mintClosed": "Mint Cerrado",
+    "english": "English",
+    "spanish": "Español",
+    "usdt": "USDT",
+    "logoAlt": "Logo Enschile",
+    "verified": "Verificado",
+    "languageNames": {
+      "english": "English",
+      "spanish": "Español"
+    },
+    "socialNetworks": {
+      "twitter": "Twitter",
+      "github": "GitHub",
+      "instagram": "Instagram",
+      "telegram": "Telegram"
+    }
+  },
+  "home": {
+    "title": "ENSCHILE Token Sale Landing",
+    "metaDescription": "ENSCHILE Token Sale Landing Page",
+    "tokenPrice": {
+      "title": "Precio del Token",
+      "description": "Precio actual del token ENSCL",
+      "equivalence": "1 ENSCL = {{price}} USDT"
+    },
+    "saleProgress": {
+      "title": "Progreso de Venta",
+      "description": "Tokens vendidos vs disponibles",
+      "sold": "Vendido",
+      "remaining": "restantes",
+      "ofTotal": "del total"
+    },
+    "quantitySelector": {
+      "title": "Selector de Cantidad",
+      "description": "Desliza para seleccionar",
+      "tokenAmount": "Cantidad de Tokens",
+      "unitPrice": "Precio unitario",
+      "estimatedTotal": "Total estimado",
+      "confirmPurchase": "Confirmar Compra",
+      "approveUSDT": "Aprobar USDT",
+      "approving": "Aprobando...",
+      "purchasing": "Comprando...",
+      "processing": "Procesando...",
+      "purchaseSuccess": "¡Compra exitosa!",
+      "connectWallet": "Conecta tu billetera para continuar",
+      "insufficientBalance": "Balance de USDT insuficiente",
+      "readyToPurchase": "Listo para comprar",
+      "quickSelection": "Selección rápida"
+    },
+    "ensclBalance": {
+      "title": "Balance ENSCL",
+      "description": "Tus tokens ENSCL",
+      "balance": "Balance",
+      "addToMetaMask": "MetaMask",
+      "adding": "Agregando...",
+      "metaMaskNotFound": "MetaMask no encontrado. Por favor, instala MetaMask para continuar.",
+      "addError": "Error al agregar el token a MetaMask"
+    },
+    "purchaseSuccess": {
+      "title": "¡Compra Exitosa!",
+      "congratulations": "¡Felicidades! Tu compra se ha completado exitosamente.",
+      "summary": "Resumen de la compra",
+      "tokensPurchased": "Tokens comprados",
+      "totalCost": "Costo total",
+      "transactionHash": "Hash de transacción",
+      "viewOnEtherscan": "Ver en Etherscan",
+      "addToMetaMask": "Agregar ENSCL a MetaMask",
+      "close": "Cerrar",
+      "adding": "Agregando...",
+      "etherscanUnavailable": "Etherscan no disponible para esta red"
+    }
+  },
+  "demo": {
+    "title": "Demo - Tarjetas de Compra de Tokens",
+    "metaDescription": "Página de demostración con 10 diseños diferentes de tarjetas de compra de tokens",
+    "heading": "Diseños de Tarjetas de Compra de Tokens",
+    "subheading": "10 diseños creativos y profesionales para compra e intercambio de tokens",
+    "cards": {
+      "minimalist": {
+        "title": "Compra Minimalista",
+        "description": "Diseño limpio y simple",
+        "amount": "Cantidad",
+        "price": "Precio",
+        "total": "Total",
+        "buyNow": "Comprar Ahora"
+      },
+      "quantitySelector": {
+        "title": "Selector de Cantidad",
+        "description": "Desliza para seleccionar",
+        "tokenAmount": "Cantidad de Tokens",
+        "unitPrice": "Precio unitario",
+        "estimatedTotal": "Total estimado",
+        "confirmPurchase": "Confirmar Compra"
+      },
+      "exchange": {
+        "title": "Intercambio",
+        "description": "Compra o vende tokens",
+        "buy": "Comprar",
+        "sell": "Vender",
+        "buyAmount": "Cantidad a comprar",
+        "sellAmount": "Cantidad a vender",
+        "currentPrice": "Precio actual",
+        "buyTokens": "Comprar Tokens",
+        "sellTokens": "Vender Tokens"
+      },
+      "tokenSale": {
+        "title": "ENSCHILE Token Sale",
+        "description": "Progreso de la venta",
+        "active": "Activo",
+        "sold": "Vendidos",
+        "completed": "completado",
+        "available": "disponibles",
+        "price": "Precio",
+        "raised": "Recaudado",
+        "participateNow": "Participar Ahora"
+      },
+      "quickSwap": {
+        "title": "Quick Swap",
+        "description": "Intercambio rápido",
+        "from": "Desde",
+        "to": "Hacia",
+        "swap": "Intercambiar"
+      },
+      "detailed": {
+        "title": "Compra Detallada",
+        "description": "Información básica y detalles",
+        "amount": "Cantidad",
+        "total": "Total",
+        "unitPrice": "Precio unitario",
+        "estimatedTime": "Tiempo estimado",
+        "networkFee": "Fee de red",
+        "willReceive": "Recibirás aproximadamente",
+        "continue": "Continuar"
+      },
+      "quickPurchase": {
+        "title": "Compra Rápida",
+        "description": "Selecciona una cantidad predefinida",
+        "orCustom": "O ingresa cantidad personalizada",
+        "usdEquivalent": "Equivalente en USD"
+      },
+      "premium": {
+        "title": "Enschile Token",
+        "symbol": "ENS",
+        "premium": "Premium",
+        "price": "Precio",
+        "marketCap": "Market Cap",
+        "buyAmount": "Cantidad a comprar",
+        "total": "Total",
+        "connectAndBuy": "Conectar y Comprar"
+      },
+      "priceAnalysis": {
+        "title": "Análisis de Precio",
+        "description": "Comparación de precios",
+        "currentPrice": "Precio actual",
+        "price24h": "Precio hace 24h",
+        "previous": "Anterior",
+        "change24h": "Cambio 24h",
+        "volume24h": "Volumen 24h",
+        "liquidity": "Liquidez",
+        "high": "Alta",
+        "viewFullChart": "Ver Gráfico Completo"
+      },
+      "special": {
+        "title": "Compra Especial",
+        "description": "Diseño único con efectos especiales",
+        "auto": "Auto",
+        "amount": "Cantidad",
+        "price": "Precio",
+        "bonus": "Bonificación",
+        "autoModeActive": "Modo automático activado",
+        "totalWithBonus": "Total con bonificación",
+        "specialPurchase": "Compra Especial"
+      }
+    }
+  },
+  "stats": {
+    "title": "Estadísticas del Token Sale - ENSCL",
+    "metaDescription": "Estadísticas y métricas del token sale de ENSCL",
+    "heading": "Estadísticas del ENSCHILE Token Sale",
+    "subheading": "Métricas en tiempo real de la venta de tokens ENSCL",
+    "totalTokensAvailable": "Total de Tokens Disponibles",
+    "saleStatus": {
+      "title": "Estado de la Venta",
+      "active": "Activa",
+      "completed": "Completado"
+    },
+    "saleProgress": {
+      "title": "Progreso de Venta",
+      "description": "Tokens vendidos vs disponibles",
+      "sold": "Vendido",
+      "remaining": "restantes",
+      "ofTotal": "del total"
+    },
+    "totalRaised": {
+      "title": "Total Recaudado",
+      "sinceYesterday": "desde ayer"
+    },
+    "tokenPrice": {
+      "title": "Precio del Token",
+      "equivalence": "1 ENSCL = {{price}} USDT",
+      "totalSaleValue": "Valor total del sale"
+    },
+    "participants": {
+      "title": "Participantes",
+      "activeBuyers": "Compradores activos",
+      "averagePerBuyer": "Promedio por comprador"
+    },
+    "tokensSold": {
+      "title": "Tokens Vendidos",
+      "of": "de",
+      "progress": "Progreso"
+    },
+    "tokensRemaining": {
+      "title": "Tokens Restantes",
+      "description": "Disponibles para compra",
+      "estimatedValue": "Valor estimado:",
+      "availablePercentage": "Porcentaje disponible:"
+    },
+    "distribution": {
+      "title": "Distribución",
+      "sold": "Vendido",
+      "available": "Disponible"
+    },
+    "timeRemaining": {
+      "title": "Tiempo Restante",
+      "urgent": "Urgente",
+      "daysUntilClose": "Días hasta el cierre",
+      "averageDailyPace": "Ritmo diario promedio"
+    },
+    "additionalMetrics": {
+      "title": "Métricas Adicionales",
+      "subtitle": "Análisis detallado del rendimiento",
+      "totalSaleValue": "Valor Total del Sale",
+      "description": "Capitalización objetivo",
+      "goal": "Objetivo",
+      "tokensToSell": "Tokens por Vender",
+      "descriptionAvailable": "ENSCL disponibles",
+      "salePace": "Ritmo de Venta",
+      "descriptionDaily": "Promedio diario",
+      "increasing": "En aumento"
+    }
+  },
+  "faq": {
+    "title": "FAQ",
+    "heading": "Preguntas frecuentes",
+    "description": "Encuentra respuestas a las preguntas más comunes sobre nuestro token",
+    "questions": [
+      {
+        "question": "¿Cuántos tokens puedo comprar?",
+        "answer": "Puedes adquirir la cantidad que estimes conveniente dentro del rango habilitado en la preventa, siempre sujeta a la disponibilidad de stock vigente."
+      },
+      {
+        "question": "¿Qué métodos de pago están disponibles?",
+        "answer": "Los pagos se realizan exclusivamente de forma onchain en la red de Ethereum. Puedes usar MetaMask o Rabby para completar tu compra con USDT. No aceptamos pagos con monedas tradicionales ni otros procesadores de pago."
+      },
+      {
+        "question": "¿Cuándo recibiré mis tokens?",
+        "answer": "¡Buenas noticias! Los tokens se liberan automáticamente al momento de la compra a través de la interacción del contrato inteligente. No necesitas esperar días ni procesos manuales: una vez que confirmes la transacción en tu billetera, los ENSCL llegarán instantáneamente a tu dirección. Es así de simple y transparente gracias a la tecnología blockchain."
+      },
+      {
+        "question": "¿Dónde recibiré mis tokens?",
+        "answer": "Los tokens se recibirán automáticamente en la billetera que tengas conectada en la landing al momento de realizar la compra. Asegúrate de tener la billetera correcta conectada antes de confirmar tu transacción."
+      },
+      {
+        "question": "¿Cómo puedo intercambiar mis tokens después de comprarlos?",
+        "answer": "Una vez finalizada la preventa, podrás intercambiar tus tokens ENSCL directamente en Uniswap v4. Para garantizar que siempre haya liquidez disponible para las operaciones, destinaremos el 1% de todos los fondos recaudados durante la preventa para crear y mantener pools de liquidez en esta plataforma. Esto te permitirá comprar y vender tus tokens de forma sencilla y segura cuando lo necesites."
+      },
+      {
+        "question": "¿Qué respalda el valor de EnsChile?",
+        "answer": "EnsChile cuenta con el respaldo de una cartera diversificada de más de 500 dominios ENS en Ethereum. De esta colección, aproximadamente 300 son prepunks con números inferiores a 3000, lo que representa activos digitales de alto valor dentro del ecosistema ENS. Esta base sólida de dominios proporciona un fundamento tangible y valioso para el proyecto."
+      },
+      {
+        "question": "¿Cómo se mantienen activos los dominios ENS a largo plazo?",
+        "answer": "Los dominios ENS tienen un período de validez limitado y requieren renovación periódica para mantenerse activos. Para asegurar que nuestra colección de dominios permanezca protegida y operativa, dedicamos el 1% de todos los ingresos de la preventa a un fondo de renovación automática. Este mecanismo garantiza que los dominios que estén próximos a vencer se renueven de forma automática, protegiendo así el valor y la integridad de los activos que respaldan el proyecto."
+      },
+      {
+        "question": "¿Cómo participo de las ganancias generadas por los dominios?",
+        "answer": "Todas las ganancias que se generen por la venta o arriendo de los dominios ENS se repartirán entre los poseedores de tokens ENSCL de forma automática. Un contrato inteligente se encargará de calcular y distribuir tu parte correspondiente según la cantidad de tokens que tengas en tu billetera. Mientras más tokens poseas, mayor será tu participación en las utilidades. Este proceso es completamente transparente y funciona sin intermediarios, garantizando que cada persona reciba su parte justa de manera proporcional y descentralizada."
+      },
+      {
+        "question": "¿Puedo participar en las decisiones del proyecto?",
+        "answer": "Sí, absolutamente. Los tokens ENSCL te otorgan el derecho a formar parte de una organización autónoma descentralizada que se gestionará a través de Tally. Mediante contratos inteligentes, podrás votar y proponer acciones relacionadas con una porción de los activos de EnSchile. Cada decisión se ejecuta directamente en la blockchain, lo que significa que tu voz cuenta y que las propuestas ganadoras se implementan automáticamente sin necesidad de intermediarios. Además, como miembro activo de la organización, recibirás una parte de los beneficios generados por las operaciones que se realicen con esos activos."
+      }
+    ]
+  },
+  "contracts": {
+    "enscl": {
+      "title": "Contrato de Token ENSCL",
+      "description": "Token ERC20 estándar con extensiones avanzadas. Incluye soporte para ERC1363 (transfer and call), ERC20Burnable, ERC20Permit y ERC20Votes. Total supply: 10,000,000 tokens."
+    },
+    "tokensale": {
+      "title": "Contrato de ENSCHILE Token Sale",
+      "description": "Contrato de venta de tokens con protección ReentrancyGuard y control Ownable. Precio fijo: 0.1 USDT por token. Límite máximo por usuario: 50,000 tokens."
+    },
+    "github": {
+      "title": "Código Abierto",
+      "description": "Los contratos inteligentes y el código del landing están disponibles en GitHub para auditoría de código y DYOR (Do Your Own Research). Transparencia total para la comunidad."
+    },
+    "viewOnEtherscan": "Ver en Etherscan",
+    "viewOnGitHub": "Ver en GitHub"
+  },
+  "errors": {
+    "contractAddressesNotConfigured": "Direcciones de contrato no configuradas",
+    "tokenPriceUnavailable": "El precio del token no está disponible o es inválido. Por favor, intenta más tarde.",
+    "cannotCalculateTotalCost": "No se pudo calcular el costo total. Verifica que el precio del token sea válido.",
+    "approveUSDTError": "Error al aprobar USDT",
+    "tokenAmountMustBeGreaterThanZero": "La cantidad de tokens debe ser mayor que 0",
+    "onlyXTokensAvailable": "Solo hay {{count}} tokens disponibles",
+    "insufficientUSDTBalance": "Balance de USDT insuficiente",
+    "approvalRequiredFirst": "Se requiere aprobación de USDT primero",
+    "purchaseTokensError": "Error al comprar tokens",
+    "priceError": "Error",
+    "calculatedCostIsZero": "El costo calculado es cero. Por favor, verifica que el precio del token esté configurado correctamente en el contrato.",
+    "calculatedCostIsZeroAlt": "El costo calculado es cero. El precio del token podría no estar configurado correctamente en el contrato.",
+    "transactionReverted": "La transacción fue revertida por el contrato.",
+    "transactionRevertedWithReason": "Transacción revertida: {{reason}}",
+    "insufficientBalanceForTransaction": "Balance insuficiente para completar la transacción.",
+    "transactionCancelledByUser": "Transacción cancelada por el usuario.",
+    "approvalCancelledByUser": "Aprobación cancelada por el usuario."
+  },
+  "logoSection": {
+    "efp": "EFP",
+    "ens": "ENS",
+    "ethereum": "Ethereum",
+    "ethid": "ETH ID",
+    "ethidentitykit": "ETH Identity Kit",
+    "grails": "Grails",
+    "signWithEthereum": "Sign with Ethereum",
+    "siwe": "SIWE",
+    "tally": "Tally"
+  }
+}
