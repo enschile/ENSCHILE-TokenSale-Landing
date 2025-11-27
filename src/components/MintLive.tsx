@@ -11,7 +11,6 @@ const ENSCL_DECIMALS = 18;
 export function MintLive() {
   const { t } = useLanguage();
 
-  // Leer tokens disponibles (balance actual del contrato TokenSale)
   const { data: availableTokens, isLoading: isLoadingAvailable } = useReadContract({
     address: TOKEN_SALE_CONTRACT_ADDRESS,
     abi: TOKEN_SALE_ABI,

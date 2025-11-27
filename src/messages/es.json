@@ -59,7 +59,8 @@
       "addToMetaMask": "MetaMask",
       "adding": "Agregando...",
       "metaMaskNotFound": "MetaMask no encontrado. Por favor, instala MetaMask para continuar.",
-      "addError": "Error al agregar el token a MetaMask"
+      "addError": "Error al agregar el token a MetaMask",
+      "addSuccess": "¡Token ENSCL agregado a MetaMask exitosamente!"
     },
     "purchaseSuccess": {
       "title": "¡Compra Exitosa!",
@@ -321,7 +322,27 @@
     "transactionRevertedWithReason": "Transacción revertida: {{reason}}",
     "insufficientBalanceForTransaction": "Balance insuficiente para completar la transacción.",
     "transactionCancelledByUser": "Transacción cancelada por el usuario.",
-    "approvalCancelledByUser": "Aprobación cancelada por el usuario."
+    "approvalCancelledByUser": "Aprobación cancelada por el usuario.",
+    "writeContractNotAvailable": "El contrato de escritura no está disponible. Por favor, verifica tu conexión.",
+    "invalidUserAddress": "Dirección de usuario inválida.",
+    "invalidApprovalAmount": "Monto de aprobación inválido.",
+    "invalidContractAddress": "Dirección de contrato inválida.",
+    "invalidTokenAmount": "Cantidad de tokens inválida.",
+    "malformedTransaction": "La transacción está mal formada. Por favor, verifica los parámetros e intenta nuevamente."
+  },
+  "toasts": {
+    "approval": {
+      "initiated": "Aprobación iniciada",
+      "pending": "Esperando confirmación de aprobación...",
+      "success": "Aprobación exitosa",
+      "error": "Error en la aprobación"
+    },
+    "purchase": {
+      "initiated": "Compra iniciada",
+      "pending": "Esperando confirmación de compra...",
+      "success": "Compra exitosa",
+      "error": "Error en la compra"
+    }
   },
   "logoSection": {
     "efp": "EFP",

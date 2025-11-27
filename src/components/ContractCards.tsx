@@ -23,7 +23,7 @@ export const ContractCards = () => {
       verified: true,
       link: `${etherscanBaseUrl}/${ensclAddress}`,
       linkText: t('contracts.viewOnEtherscan'),
-      bgImage: '/img/card-bg-1.jpg', // Placeholder, se puede usar gradiente CSS si no existe
+      bgImage: '/img/card-bg-1.jpg',
       gradient: 'from-blue-600/20 via-cyan-600/20 to-blue-500/20',
     },
     {
@@ -34,7 +34,7 @@ export const ContractCards = () => {
       verified: true,
       link: `${etherscanBaseUrl}/${tokenSaleAddress}`,
       linkText: t('contracts.viewOnEtherscan'),
-      bgImage: '/img/card-bg-2.jpg', // Placeholder, se puede usar gradiente CSS si no existe
+      bgImage: '/img/card-bg-2.jpg',
       gradient: 'from-cyan-600/20 via-blue-600/20 to-purple-600/20',
     },
     {
@@ -45,8 +45,8 @@ export const ContractCards = () => {
       verified: false,
       link: githubUrl,
       linkText: t('contracts.viewOnGitHub'),
-      bgImage: '/img/card-bg-3.jpg', // Placeholder, se puede usar gradiente CSS si no existe
-      gradient: 'from-purple-600/20 via-pink-600/20 to-cyan-600/20',
+      bgImage: '/img/card-bg-3.jpg',
+      gradient: 'from-cyan-600/20 via-blue-600/20 to-cyan-500/20',
     },
   ];
 
@@ -62,7 +62,6 @@ export const ContractCards = () => {
               noHover
               className="border-blue-500/20 relative overflow-hidden group min-h-[320px]"
             >
-              {/* Patrón decorativo de fondo - puntos */}
               <div className="absolute inset-0 pointer-events-none z-0" 
                    style={{
                      backgroundImage: `url("data:image/svg+xml,%3Csvg width='32' height='32' viewBox='0 0 32 32' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%233b82f6' fill-opacity='0.15'%3E%3Ccircle cx='16' cy='16' r='1.5'/%3E%3C/g%3E%3C/svg%3E")`,
@@ -70,15 +69,12 @@ export const ContractCards = () => {
                    }}></div>
               <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 via-transparent to-cyan-500/10 pointer-events-none z-0"></div>
               
-              {/* Background Image/Gradient */}
               <div
                 className={`absolute inset-0 bg-gradient-to-br ${card.gradient} opacity-50 group-hover:opacity-70 transition-opacity duration-300 z-0`}
               />
               
-              {/* Overlay for text readability */}
               <div className="absolute inset-0 bg-black/30 group-hover:bg-black/40 transition-colors duration-300 z-0" />
 
-              {/* Content */}
               <div className="relative z-10 h-full flex flex-col">
                 <CardHeader className="pb-4 flex-1">
                   <div className="flex items-start justify-between mb-4">

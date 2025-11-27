@@ -39,19 +39,16 @@ export function PurchaseSuccessModal({
   const chainId = useChainId();
   const [isAdding, setIsAdding] = useState(false);
 
-  // Disparar confetti cuando se abre el modal
   useEffect(() => {
     if (!open) return;
 
     let interval: NodeJS.Timeout | null = null;
     let timeoutId: NodeJS.Timeout | null = null;
 
-    // Delay para asegurar que el modal esté renderizado
     timeoutId = setTimeout(() => {
       const duration = 3000;
       const animationEnd = Date.now() + duration;
       
-      // Configuración del confetti con z-index alto para que aparezca sobre el modal
       const defaults = { 
         startVelocity: 30, 
         spread: 360, 
@@ -65,7 +62,6 @@ export function PurchaseSuccessModal({
         return Math.random() * (max - min) + min;
       }
 
-      // Confetti inicial intenso desde el centro
       confetti({
         ...defaults,
         particleCount: 150,
@@ -82,7 +78,6 @@ export function PurchaseSuccessModal({
         origin: { x: 0.5, y: 0.5 },
       });
 
-      // Disparos continuos desde los lados
       interval = setInterval(() => {
         const timeLeft = animationEnd - Date.now();
 
@@ -145,10 +140,8 @@ export function PurchaseSuccessModal({
   const etherscanUrl = transactionHash ? getEtherscanTxUrl(transactionHash, chainId) : null;
   const canViewOnEtherscan = isEtherscanAvailable(chainId) && etherscanUrl !== null;
   
-  // URL alternativa si Etherscan no está disponible pero tenemos hash
   const getTransactionUrl = (hash: string) => {
     if (etherscanUrl) return etherscanUrl;
-    // Intentar construir URL para Ethereum mainnet como fallback
     return `https://etherscan.io/tx/${hash}`;
   };
 

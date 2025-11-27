@@ -21,9 +21,9 @@ export function USDTBalance() {
     args: address ? [address] : undefined,
     query: {
       enabled: isConnected && !!address,
-      refetchInterval: 10000, // Actualizar cada 10 segundos
-      refetchOnMount: true, // Refrescar al montar el componente
-      refetchOnWindowFocus: true, // Refrescar al enfocar la ventana
+      refetchInterval: 10000,
+      refetchOnMount: true,
+      refetchOnWindowFocus: true,
     },
   });
 
@@ -33,7 +33,6 @@ export function USDTBalance() {
     const formatted = formatUnits(balanceValue, USDT_DECIMALS);
     const num = parseFloat(formatted);
     
-    // Formatear con 2 decimales y separadores de miles
     return num.toLocaleString('en-US', {
       minimumFractionDigits: 2,
       maximumFractionDigits: 2,

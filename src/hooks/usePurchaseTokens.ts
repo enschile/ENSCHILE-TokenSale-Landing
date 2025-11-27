@@ -1,9 +1,10 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import { useAccount, useReadContract, useWriteContract, useWaitForTransactionReceipt } from 'wagmi';
+import { useState, useEffect, useRef } from 'react';
+import { useAccount, useReadContract, useWriteContract, useWaitForTransactionReceipt, useSimulateContract } from 'wagmi';
 import { useQueryClient } from '@tanstack/react-query';
-import { parseUnits, formatUnits } from 'viem';
+import { parseUnits, formatUnits, isAddress } from 'viem';
+import { toast } from 'sonner';
 import { TOKEN_SALE_ABI } from '@/abis/tokenSale';
 import { USDT_ABI } from '@/abis/usdt';
 import { ENSCL_ABI } from '@/abis/enscl';
@@ -26,8 +27,10 @@ export function usePurchaseTokens({ tokenAmount, enabled = true }: UsePurchaseTo
   const queryClient = useQueryClient();
   const [needsApproval, setNeedsApproval] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [pendingApprovalAmount, setPendingApprovalAmount] = useState<bigint | null>(null);
+  const approvalToastIdRef = useRef<string | number | null>(null);
+  const purchaseToastIdRef = useRef<string | number | null>(null);
 
-  // Leer precio del contrato
   const { data: pricePerToken, isLoading: isLoadingPrice } = useReadContract({
     address: TOKEN_SALE_CONTRACT_ADDRESS,
     abi: TOKEN_SALE_ABI,
@@ -37,7 +40,6 @@ export function usePurchaseTokens({ tokenAmount, enabled = true }: UsePurchaseTo
     },
   });
 
-  // Leer balance de USDT del usuario
   const { data: usdtBalance, isLoading: isLoadingBalance, refetch: refetchUSDTBalance } = useReadContract({
     address: USDT_CONTRACT_ADDRESS,
     abi: USDT_ABI,
@@ -48,7 +50,6 @@ export function usePurchaseTokens({ tokenAmount, enabled = true }: UsePurchaseTo
     },
   });
 
-  // Leer aprobación de USDT
   const { data: allowance, isLoading: isLoadingAllowance, refetch: refetchAllowance } = useReadContract({
     address: USDT_CONTRACT_ADDRESS,
     abi: USDT_ABI,
@@ -59,7 +60,6 @@ export function usePurchaseTokens({ tokenAmount, enabled = true }: UsePurchaseTo
     },
   });
 
-  // Leer tokens disponibles
   const { data: availableTokens, isLoading: isLoadingAvailable } = useReadContract({
     address: TOKEN_SALE_CONTRACT_ADDRESS,
     abi: TOKEN_SALE_ABI,
@@ -69,22 +69,16 @@ export function usePurchaseTokens({ tokenAmount, enabled = true }: UsePurchaseTo
     },
   });
 
-  // Calcular costo total
   const calculateTotalCost = (): bigint | null => {
     if (!pricePerToken || tokenAmount <= 0) return null;
     
-    // Validar que el precio sea mayor que cero
     if (pricePerToken === BigInt(0)) return null;
     
-    // Convertir tokenAmount a wei (18 decimales) como espera el contrato
-    // El contrato calcula: usdtCost = (tokenAmount * PRICE_PER_TOKEN) / 1e18
     const tokenAmountWei = parseUnits(tokenAmount.toString(), ENSCL_DECIMALS);
     const oneToken = parseUnits('1', ENSCL_DECIMALS);
     
-    // Aplicar la misma fórmula que el contrato
     const totalCost = (tokenAmountWei * pricePerToken) / oneToken;
     
-    // Validar que el costo calculado sea mayor que cero
     if (totalCost === BigInt(0)) return null;
     
     return totalCost;
@@ -92,7 +86,6 @@ export function usePurchaseTokens({ tokenAmount, enabled = true }: UsePurchaseTo
 
   const totalCost = calculateTotalCost();
 
-  // Verificar si necesita aprobación
   useEffect(() => {
     if (allowance !== undefined && totalCost !== null) {
       setNeedsApproval(allowance < totalCost);
@@ -101,7 +94,26 @@ export function usePurchaseTokens({ tokenAmount, enabled = true }: UsePurchaseTo
     }
   }, [allowance, totalCost]);
 
-  // Write contract para aprobación
+  const { data: approveSimulation, error: approveSimulationError } = useSimulateContract({
+    address: USDT_CONTRACT_ADDRESS,
+    abi: USDT_ABI,
+    functionName: 'approve',
+    args: totalCost !== null && TOKEN_SALE_CONTRACT_ADDRESS ? [TOKEN_SALE_CONTRACT_ADDRESS, totalCost] : undefined,
+    query: {
+      enabled: !!USDT_CONTRACT_ADDRESS && !!TOKEN_SALE_CONTRACT_ADDRESS && totalCost !== null && totalCost > BigInt(0) && isConnected && !!address && !pendingApprovalAmount,
+    },
+  });
+
+  const { data: resetSimulation, error: resetSimulationError } = useSimulateContract({
+    address: USDT_CONTRACT_ADDRESS,
+    abi: USDT_ABI,
+    functionName: 'approve',
+    args: TOKEN_SALE_CONTRACT_ADDRESS ? [TOKEN_SALE_CONTRACT_ADDRESS, BigInt(0)] : undefined,
+    query: {
+      enabled: !!USDT_CONTRACT_ADDRESS && !!TOKEN_SALE_CONTRACT_ADDRESS && isConnected && !!address && allowance !== undefined && allowance > BigInt(0) && !pendingApprovalAmount,
+    },
+  });
+
   const { 
     writeContract: writeApprove, 
     data: approveHash, 
@@ -109,7 +121,6 @@ export function usePurchaseTokens({ tokenAmount, enabled = true }: UsePurchaseTo
     error: approveError 
   } = useWriteContract();
 
-  // Write contract para compra
   const { 
     writeContract: writeBuyTokens, 
     data: buyHash, 
@@ -117,23 +128,210 @@ export function usePurchaseTokens({ tokenAmount, enabled = true }: UsePurchaseTo
     error: buyError 
   } = useWriteContract();
 
-  // Esperar confirmación de aprobación
-  const { isLoading: isWaitingApproval, isSuccess: isApprovalSuccess } = useWaitForTransactionReceipt({
+  const { isLoading: isWaitingApproval, isSuccess: isApprovalSuccess, error: approvalWaitError } = useWaitForTransactionReceipt({
     hash: approveHash,
     query: {
       enabled: !!approveHash,
     },
   });
 
-  // Esperar confirmación de compra
-  const { isLoading: isWaitingBuy, isSuccess: isBuySuccess } = useWaitForTransactionReceipt({
+  // Toast para cuando se inicia la aprobación
+  useEffect(() => {
+    if (approveHash && !approvalToastIdRef.current) {
+      const toastId = toast.info(t('toasts.approval.initiated'), {
+        duration: 3000,
+      });
+      approvalToastIdRef.current = toastId;
+    }
+  }, [approveHash, t]);
+
+  // Toast para cuando está esperando confirmación de aprobación
+  useEffect(() => {
+    if (approveHash && isWaitingApproval && approvalToastIdRef.current) {
+      toast.dismiss(approvalToastIdRef.current);
+      approvalToastIdRef.current = toast.loading(t('toasts.approval.pending'), {
+        duration: Infinity,
+      });
+    }
+  }, [approveHash, isWaitingApproval, t]);
+
+  // Toast cuando la aprobación es exitosa
+  useEffect(() => {
+    if (isApprovalSuccess && approvalToastIdRef.current) {
+      toast.dismiss(approvalToastIdRef.current);
+      approvalToastIdRef.current = null;
+      toast.success(t('toasts.approval.success'), {
+        duration: 5000,
+      });
+    }
+  }, [isApprovalSuccess, t]);
+
+  // Toast cuando hay error en la aprobación durante la espera
+  useEffect(() => {
+    if (approvalWaitError && approvalToastIdRef.current) {
+      toast.dismiss(approvalToastIdRef.current);
+      approvalToastIdRef.current = null;
+      const errorMessage = approvalWaitError.message?.toLowerCase() || '';
+      let translatedError = t('toasts.approval.error');
+      if (errorMessage.includes('user rejected') || errorMessage.includes('user denied')) {
+        translatedError = t('errors.approvalCancelledByUser');
+      }
+      toast.error(translatedError, {
+        duration: 5000,
+      });
+    }
+  }, [approvalWaitError, t]);
+
+
+  useEffect(() => {
+    if (isApprovalSuccess) {
+      const handleApprovalSuccess = async () => {
+        const newAllowance = await refetchAllowance();
+        
+        if (pendingApprovalAmount !== null && pendingApprovalAmount > BigInt(0) && writeApprove) {
+          const amountToApprove = pendingApprovalAmount;
+          setPendingApprovalAmount(null);
+          
+          writeApprove({
+            address: USDT_CONTRACT_ADDRESS,
+            abi: USDT_ABI,
+            functionName: 'approve',
+            args: [TOKEN_SALE_CONTRACT_ADDRESS, amountToApprove],
+            ...(approveSimulation && { gas: approveSimulation.request.gas }),
+          });
+          return;
+        }
+        
+        if (newAllowance.data !== undefined && totalCost !== null) {
+          setNeedsApproval(newAllowance.data < totalCost);
+        }
+      };
+      
+      handleApprovalSuccess();
+    }
+  }, [isApprovalSuccess, refetchAllowance, pendingApprovalAmount, writeApprove, approveSimulation, totalCost]);
+
+  const { isLoading: isWaitingBuy, isSuccess: isBuySuccess, error: buyWaitError } = useWaitForTransactionReceipt({
     hash: buyHash,
     query: {
       enabled: !!buyHash,
     },
   });
 
-  // Calcular estados de carga y procesamiento
+  // Toast para cuando se inicia la compra
+  useEffect(() => {
+    if (buyHash && !purchaseToastIdRef.current) {
+      const toastId = toast.info(t('toasts.purchase.initiated'), {
+        duration: 3000,
+      });
+      purchaseToastIdRef.current = toastId;
+    }
+  }, [buyHash, t]);
+
+  // Toast para cuando está esperando confirmación de compra
+  useEffect(() => {
+    if (buyHash && isWaitingBuy && purchaseToastIdRef.current) {
+      toast.dismiss(purchaseToastIdRef.current);
+      purchaseToastIdRef.current = toast.loading(t('toasts.purchase.pending'), {
+        duration: Infinity,
+      });
+    }
+  }, [buyHash, isWaitingBuy, t]);
+
+  // Toast cuando la compra es exitosa
+  useEffect(() => {
+    if (isBuySuccess && purchaseToastIdRef.current) {
+      toast.dismiss(purchaseToastIdRef.current);
+      purchaseToastIdRef.current = null;
+      toast.success(t('toasts.purchase.success'), {
+        duration: 5000,
+      });
+    }
+  }, [isBuySuccess, t]);
+
+  // Toast cuando hay error en la compra durante la espera
+  useEffect(() => {
+    if (buyWaitError && purchaseToastIdRef.current) {
+      toast.dismiss(purchaseToastIdRef.current);
+      purchaseToastIdRef.current = null;
+      const errorMessage = buyWaitError.message?.toLowerCase() || '';
+      let translatedError = t('toasts.purchase.error');
+      if (errorMessage.includes('user rejected') || errorMessage.includes('user denied')) {
+        translatedError = t('errors.transactionCancelledByUser');
+      } else if (errorMessage.includes('reverted')) {
+        translatedError = t('errors.transactionReverted');
+      }
+      toast.error(translatedError, {
+        duration: 5000,
+      });
+    }
+  }, [buyWaitError, t]);
+
+  useEffect(() => {
+    if (isBuySuccess) {
+      const handleBuySuccess = async () => {
+        queryClient.invalidateQueries({
+          predicate: (query) => {
+            const queryKey = query.queryKey;
+            return (
+              Array.isArray(queryKey) &&
+              queryKey.length > 1 &&
+              typeof queryKey[0] === 'string' &&
+              queryKey[0] === 'readContract' &&
+              typeof queryKey[1] === 'object' &&
+              queryKey[1] !== null &&
+              'address' in queryKey[1] &&
+              'functionName' in queryKey[1] &&
+              queryKey[1].address === USDT_CONTRACT_ADDRESS &&
+              queryKey[1].functionName === 'balanceOf'
+            );
+          },
+        });
+        await refetchUSDTBalance();
+
+        queryClient.invalidateQueries({
+          predicate: (query) => {
+            const queryKey = query.queryKey;
+            return (
+              Array.isArray(queryKey) &&
+              queryKey.length > 1 &&
+              typeof queryKey[0] === 'string' &&
+              queryKey[0] === 'readContract' &&
+              typeof queryKey[1] === 'object' &&
+              queryKey[1] !== null &&
+              'address' in queryKey[1] &&
+              'functionName' in queryKey[1] &&
+              queryKey[1].address === TOKEN_SALE_CONTRACT_ADDRESS &&
+              queryKey[1].functionName === 'getAvailableTokens'
+            );
+          },
+        });
+
+        queryClient.invalidateQueries({
+          predicate: (query) => {
+            const queryKey = query.queryKey;
+            return (
+              Array.isArray(queryKey) &&
+              queryKey.length > 1 &&
+              typeof queryKey[0] === 'string' &&
+              queryKey[0] === 'readContract' &&
+              typeof queryKey[1] === 'object' &&
+              queryKey[1] !== null &&
+              'address' in queryKey[1] &&
+              'functionName' in queryKey[1] &&
+              queryKey[1].address === ENSCL_CONTRACT_ADDRESS &&
+              queryKey[1].functionName === 'balanceOf'
+            );
+          },
+        });
+
+        setError(null);
+      };
+      
+      handleBuySuccess();
+    }
+  }, [isBuySuccess, queryClient, refetchUSDTBalance]);
+
   const isLoading = 
     isLoadingPrice || 
     isLoadingBalance || 
@@ -146,78 +344,6 @@ export function usePurchaseTokens({ tokenAmount, enabled = true }: UsePurchaseTo
 
   const isProcessing = isApproving || isBuying || isWaitingApproval || isWaitingBuy;
 
-  // Refrescar allowance después de aprobación exitosa
-  useEffect(() => {
-    if (isApprovalSuccess) {
-      refetchAllowance();
-    }
-  }, [isApprovalSuccess, refetchAllowance]);
-
-  // Invalidar y refrescar balance de USDT después de compra exitosa
-  useEffect(() => {
-    if (isBuySuccess) {
-      // Invalidar todas las queries relacionadas con el balance de USDT usando un patrón
-      queryClient.invalidateQueries({
-        predicate: (query) => {
-          const queryKey = query.queryKey;
-          return (
-            Array.isArray(queryKey) &&
-            queryKey.length > 1 &&
-            typeof queryKey[0] === 'string' &&
-            queryKey[0] === 'readContract' &&
-            typeof queryKey[1] === 'object' &&
-            queryKey[1] !== null &&
-            'address' in queryKey[1] &&
-            'functionName' in queryKey[1] &&
-            queryKey[1].address === USDT_CONTRACT_ADDRESS &&
-            queryKey[1].functionName === 'balanceOf'
-          );
-        },
-      });
-      // También refrescar el balance local
-      refetchUSDTBalance();
-
-      // Invalidar todas las queries relacionadas con getAvailableTokens del contrato TokenSale
-      queryClient.invalidateQueries({
-        predicate: (query) => {
-          const queryKey = query.queryKey;
-          return (
-            Array.isArray(queryKey) &&
-            queryKey.length > 1 &&
-            typeof queryKey[0] === 'string' &&
-            queryKey[0] === 'readContract' &&
-            typeof queryKey[1] === 'object' &&
-            queryKey[1] !== null &&
-            'address' in queryKey[1] &&
-            'functionName' in queryKey[1] &&
-            queryKey[1].address === TOKEN_SALE_CONTRACT_ADDRESS &&
-            queryKey[1].functionName === 'getAvailableTokens'
-          );
-        },
-      });
-
-      // Invalidar todas las queries relacionadas con el balance de ENSCL
-      queryClient.invalidateQueries({
-        predicate: (query) => {
-          const queryKey = query.queryKey;
-          return (
-            Array.isArray(queryKey) &&
-            queryKey.length > 1 &&
-            typeof queryKey[0] === 'string' &&
-            queryKey[0] === 'readContract' &&
-            typeof queryKey[1] === 'object' &&
-            queryKey[1] !== null &&
-            'address' in queryKey[1] &&
-            'functionName' in queryKey[1] &&
-            queryKey[1].address === ENSCL_CONTRACT_ADDRESS &&
-            queryKey[1].functionName === 'balanceOf'
-          );
-        },
-      });
-    }
-  }, [isBuySuccess, queryClient, refetchUSDTBalance]);
-
-  // Validaciones
   const validation = {
     isConnected: isConnected && !!address,
     hasBalance: usdtBalance !== undefined && totalCost !== null && usdtBalance >= totalCost,
@@ -227,7 +353,6 @@ export function usePurchaseTokens({ tokenAmount, enabled = true }: UsePurchaseTo
     canApprove: false,
   };
 
-  // Validación para aprobar: necesita estar conectado, tener balance, cantidad válida y no estar procesando
   validation.canApprove =
     validation.isConnected &&
     validation.hasBalance &&
@@ -237,7 +362,6 @@ export function usePurchaseTokens({ tokenAmount, enabled = true }: UsePurchaseTo
     !isWaitingApproval &&
     !isWaitingBuy;
 
-  // Validación para comprar: todas las validaciones básicas + no necesita aprobación + tokens disponibles
   validation.canPurchase = 
     validation.isConnected &&
     validation.hasBalance &&
@@ -249,9 +373,23 @@ export function usePurchaseTokens({ tokenAmount, enabled = true }: UsePurchaseTo
     !isWaitingApproval &&
     !isWaitingBuy;
 
-  // Función para aprobar
   const approve = async () => {
-    if (!address || !USDT_CONTRACT_ADDRESS || !TOKEN_SALE_CONTRACT_ADDRESS) {
+    if (!writeApprove) {
+      setError(t('errors.writeContractNotAvailable'));
+      return;
+    }
+
+    if (!address || !isAddress(address)) {
+      setError(t('errors.invalidUserAddress'));
+      return;
+    }
+
+    if (!USDT_CONTRACT_ADDRESS || !isAddress(USDT_CONTRACT_ADDRESS) || USDT_CONTRACT_ADDRESS === '0x') {
+      setError(t('errors.contractAddressesNotConfigured'));
+      return;
+    }
+
+    if (!TOKEN_SALE_CONTRACT_ADDRESS || !isAddress(TOKEN_SALE_CONTRACT_ADDRESS) || TOKEN_SALE_CONTRACT_ADDRESS === '0x') {
       setError(t('errors.contractAddressesNotConfigured'));
       return;
     }
@@ -266,27 +404,99 @@ export function usePurchaseTokens({ tokenAmount, enabled = true }: UsePurchaseTo
       return;
     }
 
+    if (approveSimulationError) {
+      const errorMessage = approveSimulationError.message?.toLowerCase() || '';
+      if (errorMessage.includes('user rejected') || errorMessage.includes('user denied')) {
+        setError(t('errors.approvalCancelledByUser'));
+      } else if (errorMessage.includes('insufficient')) {
+        setError(t('errors.insufficientUSDTBalance'));
+      } else {
+        setError(approveSimulationError.message || t('errors.approveUSDTError'));
+      }
+      return;
+    }
+
     setError(null);
     
     try {
-      // Aprobar con el monto exacto necesario para la compra
       const approveAmount = totalCost;
+      
+      if (typeof approveAmount !== 'bigint' || approveAmount <= BigInt(0)) {
+        setError(t('errors.invalidApprovalAmount'));
+        return;
+      }
+
+      if (!isAddress(TOKEN_SALE_CONTRACT_ADDRESS)) {
+        setError(t('errors.invalidContractAddress'));
+        return;
+      }
+
+      if (allowance !== undefined && allowance > BigInt(0)) {
+        if (resetSimulationError) {
+          const errorMessage = resetSimulationError.message?.toLowerCase() || '';
+          if (errorMessage.includes('user rejected') || errorMessage.includes('user denied')) {
+            setError(t('errors.approvalCancelledByUser'));
+          } else {
+            setError(resetSimulationError.message || t('errors.approveUSDTError'));
+          }
+          return;
+        }
+
+        setPendingApprovalAmount(approveAmount);
+        
+        const resetGasEstimate = resetSimulation?.request?.gas;
+        
+        writeApprove({
+          address: USDT_CONTRACT_ADDRESS,
+          abi: USDT_ABI,
+          functionName: 'approve',
+          args: [TOKEN_SALE_CONTRACT_ADDRESS, BigInt(0)],
+          ...(resetGasEstimate && { gas: resetGasEstimate }),
+        });
+        
+        return;
+      }
+
+      const gasEstimate = approveSimulation?.request?.gas;
       
       writeApprove({
         address: USDT_CONTRACT_ADDRESS,
         abi: USDT_ABI,
         functionName: 'approve',
         args: [TOKEN_SALE_CONTRACT_ADDRESS, approveAmount],
+        ...(gasEstimate && { gas: gasEstimate }),
       });
     } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : t('errors.approveUSDTError');
+      let errorMessage = t('errors.approveUSDTError');
+      
+      if (err instanceof Error) {
+        const message = err.message.toLowerCase();
+        
+        if (message.includes('malformed') || message.includes('invalid') || message.includes('invalid address')) {
+          errorMessage = t('errors.malformedTransaction');
+        } else if (message.includes('user rejected') || message.includes('user denied')) {
+          errorMessage = t('errors.approvalCancelledByUser');
+        } else {
+          errorMessage = err.message;
+        }
+      }
+      
       setError(errorMessage);
     }
   };
 
-  // Función para comprar
   const purchase = async () => {
-    if (!address || !TOKEN_SALE_CONTRACT_ADDRESS) {
+    if (!writeBuyTokens) {
+      setError(t('errors.writeContractNotAvailable'));
+      return;
+    }
+
+    if (!address || !isAddress(address)) {
+      setError(t('errors.invalidUserAddress'));
+      return;
+    }
+
+    if (!TOKEN_SALE_CONTRACT_ADDRESS || !isAddress(TOKEN_SALE_CONTRACT_ADDRESS) || TOKEN_SALE_CONTRACT_ADDRESS === '0x') {
       setError(t('errors.contractAddressesNotConfigured'));
       return;
     }
@@ -296,13 +506,11 @@ export function usePurchaseTokens({ tokenAmount, enabled = true }: UsePurchaseTo
       return;
     }
 
-    // Validar que el precio del token esté disponible y sea válido
     if (!pricePerToken || pricePerToken === BigInt(0)) {
       setError(t('errors.tokenPriceUnavailable'));
       return;
     }
 
-    // Validar que el costo total se haya calculado correctamente
     if (totalCost === null || totalCost === BigInt(0)) {
       setError(t('errors.calculatedCostIsZero'));
       return;
@@ -329,9 +537,17 @@ export function usePurchaseTokens({ tokenAmount, enabled = true }: UsePurchaseTo
     setError(null);
 
     try {
-      // El contrato espera tokenAmount en wei (18 decimales)
-      // Convertir tokenAmount a wei usando parseUnits, igual que en el script de prueba
       const tokenAmountWei = parseUnits(tokenAmount.toString(), ENSCL_DECIMALS);
+
+      if (typeof tokenAmountWei !== 'bigint' || tokenAmountWei <= BigInt(0)) {
+        setError(t('errors.invalidTokenAmount'));
+        return;
+      }
+
+      if (!isAddress(TOKEN_SALE_CONTRACT_ADDRESS)) {
+        setError(t('errors.invalidContractAddress'));
+        return;
+      }
 
       writeBuyTokens({
         address: TOKEN_SALE_CONTRACT_ADDRESS,
@@ -343,13 +559,18 @@ export function usePurchaseTokens({ tokenAmount, enabled = true }: UsePurchaseTo
       let errorMessage = t('errors.purchaseTokensError');
       
       if (err instanceof Error) {
-        errorMessage = err.message;
+        const message = err.message.toLowerCase();
         
-        // Mejorar mensajes de error específicos
-        if (err.message.includes('calculated cost is zero') || err.message.includes('cost is zero')) {
+        if (message.includes('malformed') || message.includes('invalid') || message.includes('invalid address')) {
+          errorMessage = t('errors.malformedTransaction');
+        } else if (message.includes('calculated cost is zero') || message.includes('cost is zero')) {
           errorMessage = t('errors.calculatedCostIsZero');
-        } else if (err.message.includes('reverted')) {
+        } else if (message.includes('reverted')) {
           errorMessage = t('errors.transactionReverted');
+        } else if (message.includes('user rejected') || message.includes('user denied')) {
+          errorMessage = t('errors.transactionCancelledByUser');
+        } else {
+          errorMessage = err.message;
         }
       }
       
@@ -357,7 +578,6 @@ export function usePurchaseTokens({ tokenAmount, enabled = true }: UsePurchaseTo
     }
   };
 
-  // Función principal que maneja aprobación y compra
   const handlePurchase = async () => {
     if (needsApproval) {
       await approve();
@@ -366,21 +586,12 @@ export function usePurchaseTokens({ tokenAmount, enabled = true }: UsePurchaseTo
     }
   };
 
-  // Limpiar error cuando cambia la cantidad o cuando hay éxito
   useEffect(() => {
-    if (isBuySuccess) {
-      setError(null);
-    }
-  }, [isBuySuccess]);
-
-  useEffect(() => {
-    // Limpiar error cuando cambia la cantidad, pero no si está procesando
     if (!isProcessing) {
       setError(null);
     }
   }, [tokenAmount, isProcessing]);
 
-  // Mejorar manejo de errores de transacciones
   useEffect(() => {
     if (buyError) {
       let errorMessage = t('errors.purchaseTokensError');
@@ -388,10 +599,11 @@ export function usePurchaseTokens({ tokenAmount, enabled = true }: UsePurchaseTo
       if (buyError.message) {
         const message = buyError.message.toLowerCase();
         
-        if (message.includes('calculated cost is zero') || message.includes('cost is zero')) {
+        if (message.includes('malformed') || message.includes('invalid address') || message.includes('invalid arguments')) {
+          errorMessage = t('errors.malformedTransaction');
+        } else if (message.includes('calculated cost is zero') || message.includes('cost is zero')) {
           errorMessage = t('errors.calculatedCostIsZeroAlt');
         } else if (message.includes('reverted')) {
-          // Extraer el motivo del revert si está disponible
           const revertMatch = message.match(/reverted with reason string ['"](.*?)['"]/);
           if (revertMatch) {
             errorMessage = t('errors.transactionRevertedWithReason', { reason: revertMatch[1] });
@@ -408,6 +620,15 @@ export function usePurchaseTokens({ tokenAmount, enabled = true }: UsePurchaseTo
       }
       
       setError(errorMessage);
+      
+      // Mostrar toast de error
+      if (purchaseToastIdRef.current) {
+        toast.dismiss(purchaseToastIdRef.current);
+        purchaseToastIdRef.current = null;
+      }
+      toast.error(errorMessage, {
+        duration: 5000,
+      });
     }
   }, [buyError, t]);
 
@@ -418,7 +639,9 @@ export function usePurchaseTokens({ tokenAmount, enabled = true }: UsePurchaseTo
       if (approveError.message) {
         const message = approveError.message.toLowerCase();
         
-        if (message.includes('user rejected') || message.includes('user denied')) {
+        if (message.includes('malformed') || message.includes('invalid address') || message.includes('invalid arguments')) {
+          errorMessage = t('errors.malformedTransaction');
+        } else if (message.includes('user rejected') || message.includes('user denied')) {
           errorMessage = t('errors.approvalCancelledByUser');
         } else {
           errorMessage = approveError.message;
@@ -426,11 +649,19 @@ export function usePurchaseTokens({ tokenAmount, enabled = true }: UsePurchaseTo
       }
       
       setError(errorMessage);
+      
+      // Mostrar toast de error
+      if (approvalToastIdRef.current) {
+        toast.dismiss(approvalToastIdRef.current);
+        approvalToastIdRef.current = null;
+      }
+      toast.error(errorMessage, {
+        duration: 5000,
+      });
     }
   }, [approveError, t]);
 
   return {
-    // Estados
     isLoading,
     isProcessing,
     isApproving: isApproving || isWaitingApproval,
@@ -438,22 +669,18 @@ export function usePurchaseTokens({ tokenAmount, enabled = true }: UsePurchaseTo
     needsApproval,
     error: error || null,
     
-    // Validaciones
     validation,
     
-    // Datos
     pricePerToken: pricePerToken ? formatUnits(pricePerToken, USDT_DECIMALS) : null,
     totalCost: totalCost ? formatUnits(totalCost, USDT_DECIMALS) : null,
     usdtBalance: usdtBalance ? formatUnits(usdtBalance, USDT_DECIMALS) : null,
     allowance: allowance ? formatUnits(allowance, USDT_DECIMALS) : null,
     availableTokens: availableTokens ? formatUnits(availableTokens, ENSCL_DECIMALS) : null,
     
-    // Funciones
     approve,
     purchase,
     handlePurchase,
     
-    // Éxito
     isSuccess: isBuySuccess,
     approveHash,
     buyHash,

@@ -53,6 +53,17 @@ export const TOKEN_SALE_ABI = [
     type: 'error',
   },
   {
+    inputs: [
+      {
+        internalType: 'address',
+        name: 'token',
+        type: 'address',
+      },
+    ],
+    name: 'SafeERC20FailedOperation',
+    type: 'error',
+  },
+  {
     anonymous: false,
     inputs: [
       {

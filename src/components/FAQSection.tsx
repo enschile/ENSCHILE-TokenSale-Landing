@@ -58,7 +58,6 @@ export const FAQSection = () => {
 
   return (
     <Card variant="gradient" noHover className="border-blue-500/20 w-full relative overflow-hidden">
-      {/* Patrón decorativo de fondo - puntos */}
       <div className="absolute inset-0 pointer-events-none z-0" 
            style={{
              backgroundImage: `url("data:image/svg+xml,%3Csvg width='32' height='32' viewBox='0 0 32 32' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%233b82f6' fill-opacity='0.15'%3E%3Ccircle cx='16' cy='16' r='1.5'/%3E%3C/g%3E%3C/svg%3E")`,

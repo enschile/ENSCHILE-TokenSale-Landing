@@ -41,7 +41,6 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
     }
     let result = value || key;
     
-    // Interpolate variables if params provided
     if (params && typeof result === 'string') {
       Object.keys(params).forEach((paramKey) => {
         result = result.replace(new RegExp(`{{${paramKey}}}`, 'g'), String(params[paramKey]));

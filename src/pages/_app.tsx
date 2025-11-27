@@ -8,6 +8,7 @@ import { RainbowKitProvider } from '@rainbow-me/rainbowkit';
 
 import { config } from '../wagmi';
 import { LanguageProvider } from '../contexts/LanguageContext';
+import { Toaster } from '@/components/ui/sonner';
 
 const client = new QueryClient();
 
@@ -18,6 +19,7 @@ function MyApp({ Component, pageProps }: AppProps) {
         <QueryClientProvider client={client}>
           <RainbowKitProvider>
             <Component {...pageProps} />
+            <Toaster />
           </RainbowKitProvider>
         </QueryClientProvider>
       </WagmiProvider>

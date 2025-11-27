@@ -59,7 +59,8 @@
       "addToMetaMask": "MetaMask",
       "adding": "Adding...",
       "metaMaskNotFound": "MetaMask not found. Please install MetaMask to continue.",
-      "addError": "Error adding token to MetaMask"
+      "addError": "Error adding token to MetaMask",
+      "addSuccess": "ENSCL token added to MetaMask successfully!"
     },
     "purchaseSuccess": {
       "title": "Purchase Successful!",
@@ -321,7 +322,27 @@
     "transactionRevertedWithReason": "Transaction reverted: {{reason}}",
     "insufficientBalanceForTransaction": "Insufficient balance to complete the transaction.",
     "transactionCancelledByUser": "Transaction cancelled by user.",
-    "approvalCancelledByUser": "Approval cancelled by user."
+    "approvalCancelledByUser": "Approval cancelled by user.",
+    "writeContractNotAvailable": "Write contract is not available. Please check your connection.",
+    "invalidUserAddress": "Invalid user address.",
+    "invalidApprovalAmount": "Invalid approval amount.",
+    "invalidContractAddress": "Invalid contract address.",
+    "invalidTokenAmount": "Invalid token amount.",
+    "malformedTransaction": "Transaction is malformed. Please verify the parameters and try again."
+  },
+  "toasts": {
+    "approval": {
+      "initiated": "Approval initiated",
+      "pending": "Waiting for approval confirmation...",
+      "success": "Approval successful",
+      "error": "Approval error"
+    },
+    "purchase": {
+      "initiated": "Purchase initiated",
+      "pending": "Waiting for purchase confirmation...",
+      "success": "Purchase successful",
+      "error": "Purchase error"
+    }
   },
   "logoSection": {
     "efp": "EFP",

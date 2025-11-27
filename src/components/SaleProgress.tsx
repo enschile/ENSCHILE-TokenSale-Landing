@@ -9,23 +9,21 @@ import { useLanguage } from '../contexts/LanguageContext';
 const TOKEN_SALE_CONTRACT_ADDRESS = (process.env.NEXT_PUBLIC_TOKEN_SALE_CONTRACT_ADDRESS || '') as `0x${string}`;
 const ENSCL_DECIMALS = 18;
 
-// Leer NEXT_PUBLIC_INITIAL_TOKEN_SUPPLY del entorno y convertirlo a BigInt con 18 decimales
 const INITIAL_TOKEN_SUPPLY_RAW = process.env.NEXT_PUBLIC_INITIAL_TOKEN_SUPPLY || '0';
 const INITIAL_TOKEN_SUPPLY = BigInt(INITIAL_TOKEN_SUPPLY_RAW) * BigInt(10 ** ENSCL_DECIMALS);
 
 export function SaleProgress() {
   const { t } = useLanguage();
 
-  // Leer tokens disponibles (balance actual del contrato TokenSale)
   const { data: availableTokens, isLoading: isLoadingAvailable } = useReadContract({
     address: TOKEN_SALE_CONTRACT_ADDRESS,
     abi: TOKEN_SALE_ABI,
     functionName: 'getAvailableTokens',
     query: {
       enabled: !!TOKEN_SALE_CONTRACT_ADDRESS,
-      refetchInterval: 10000, // Actualizar cada 10 segundos
-      refetchOnMount: true, // Refrescar al montar el componente
-      refetchOnWindowFocus: true, // Refrescar al enfocar la ventana
+      refetchInterval: 10000,
+      refetchOnMount: true,
+      refetchOnWindowFocus: true,
     },
   });
 
